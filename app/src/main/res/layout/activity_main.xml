@@ -1,11 +1,111 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/primary_dark"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/RLmain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@color/default_white"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+        android:paddingTop="@dimen/activity_vertical_margin_top">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
+            <ImageView
+                android:id="@+id/IBcircle"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="12dp"
+                android:background="@drawable/round_button"
+                android:src="@drawable/needle"
+                android:translationZ="8dp" />
+
+            <ImageView
+                android:id="@+id/IBinnerCircle"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="12dp"
+                android:background="@drawable/round_button_white"
+                android:translationZ="12dp" />
+
+            <TextView
+                android:id="@+id/TVheading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="000°"
+                android:textSize="@dimen/heading_text_size"
+                android:translationZ="16dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/LLbuttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:clipChildren="false"
+            android:gravity="bottom|center_horizontal">
+
+            <ImageView
+                android:id="@+id/IVnorth"
+                android:layout_width="@dimen/direction_button_size"
+                android:layout_height="@dimen/direction_button_size"
+                android:layout_margin="@dimen/elevation_margin"
+                android:background="@drawable/round_button_accent"
+                android:clickable="false"
+                android:elevation="@dimen/elevation_low"
+                android:scaleType="centerInside"
+                android:translationZ="0dp"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/IVeast"
+                android:layout_width="@dimen/direction_button_size"
+                android:layout_height="@dimen/direction_button_size"
+                android:layout_margin="@dimen/elevation_margin"
+                android:background="@drawable/round_button_accent"
+                android:clickable="false"
+                android:elevation="@dimen/elevation_low"
+                android:scaleType="fitCenter"
+                android:translationZ="0dp"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/IVsouth"
+                android:layout_width="@dimen/direction_button_size"
+                android:layout_height="@dimen/direction_button_size"
+                android:layout_margin="@dimen/elevation_margin"
+                android:background="@drawable/round_button_accent"
+                android:clickable="false"
+                android:elevation="@dimen/elevation_low"
+                android:scaleType="fitCenter"
+                android:translationZ="0dp"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/IVwest"
+                android:layout_width="@dimen/direction_button_size"
+                android:layout_height="@dimen/direction_button_size"
+                android:layout_margin="@dimen/elevation_margin"
+                android:background="@drawable/round_button_accent"
+                android:clickable="false"
+                android:elevation="@dimen/elevation_low"
+                android:scaleType="fitCenter"
+                android:translationZ="0dp"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>
