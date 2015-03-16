@@ -67,9 +67,9 @@
                 android:background="@drawable/round_button_accent"
                 android:clickable="false"
                 android:elevation="@dimen/elevation_low"
-                android:scaleType="centerInside"
-                android:translationZ="0dp"
-                android:visibility="invisible" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/north"
+                android:translationZ="0dp" />
 
             <ImageView
                 android:id="@+id/IVeast"
@@ -79,9 +79,9 @@
                 android:background="@drawable/round_button_accent"
                 android:clickable="false"
                 android:elevation="@dimen/elevation_low"
-                android:scaleType="fitCenter"
-                android:translationZ="0dp"
-                android:visibility="invisible" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/east"
+                android:translationZ="0dp" />
 
             <ImageView
                 android:id="@+id/IVsouth"
@@ -91,9 +91,9 @@
                 android:background="@drawable/round_button_accent"
                 android:clickable="false"
                 android:elevation="@dimen/elevation_low"
-                android:scaleType="fitCenter"
-                android:translationZ="0dp"
-                android:visibility="invisible" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/south"
+                android:translationZ="0dp" />
 
             <ImageView
                 android:id="@+id/IVwest"
@@ -103,9 +103,9 @@
                 android:background="@drawable/round_button_accent"
                 android:clickable="false"
                 android:elevation="@dimen/elevation_low"
-                android:scaleType="fitCenter"
-                android:translationZ="0dp"
-                android:visibility="invisible" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/west"
+                android:translationZ="0dp" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

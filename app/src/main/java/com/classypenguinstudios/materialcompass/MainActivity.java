@@ -2,6 +2,7 @@ package com.classypenguinstudios.materialcompass;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -31,6 +32,11 @@ public class MainActivity extends Activity {
     private boolean westIVelevated = false;
     private boolean isAnimationComplete = false;
     private Animator animator;
+    private SensorManager mSensorManager;
+    private Sensor mAccelRawSensor;
+    private SensorEventListener mAccelRawListener;
+    private Sensor mHeadingSensor;
+    private SensorEventListener mHeadingListener;
 
     protected static void updateHeading(float lastValue) {
         MainActivity.heading = lastValue;
@@ -116,20 +122,20 @@ public class MainActivity extends Activity {
 
 
         // sensor parts start here
-        SensorManager sensorManager = (SensorManager) mainRL.getContext()
+        mSensorManager = (SensorManager) mainRL.getContext()
                 .getSystemService(SENSOR_SERVICE);
 
-        Sensor accelRawSensor = sensorManager
+        mAccelRawSensor = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        SensorEventListener accelRawListener = new AccelEventListener();
+        mAccelRawListener = new AccelEventListener();
         // registering sensor
-        sensorManager.registerListener(accelRawListener, accelRawSensor,
+        mSensorManager.registerListener(mAccelRawListener, mAccelRawSensor,
                 SensorManager.SENSOR_DELAY_UI);
 
-        SensorEventListener headingListener = new HeadingListener();
-        Sensor headingSensor = sensorManager
+        mHeadingListener = new HeadingListener();
+        mHeadingSensor = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        sensorManager.registerListener(headingListener, headingSensor,
+        mSensorManager.registerListener(mHeadingListener, mHeadingSensor,
                 SensorManager.SENSOR_DELAY_FASTEST);
 
         headingTV.addTextChangedListener(new TextWatcher() {
@@ -226,6 +232,21 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mAccelRawListener, mAccelRawSensor,
+                SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mHeadingListener, mHeadingSensor,
+                SensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(mAccelRawListener);
+        mSensorManager.unregisterListener(mHeadingListener);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -242,7 +263,9 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            Intent myIntent = new Intent(MainActivity.this, About.class);
+            MainActivity.this.startActivity(myIntent);
             return true;
         }
 
@@ -298,10 +321,10 @@ public class MainActivity extends Activity {
                         AccelEventListener.lastValue, event.values)) {
                     SensorManager.getOrientation(R, orientation);
                     if (lastValue != -1) {
-                        lastValue = getLowPass((float) ((360 + orientation[0] * 360 / (2 * Math.PI))
+                        lastValue = getLowPass((float) ((360 + orientation[0] * 180 / (Math.PI))
                                 % 360), lastValue) % 360;
                     } else {
-                        lastValue = (float) ((360 + orientation[0] * 360 / (2 * Math.PI))
+                        lastValue = (float) ((360 + orientation[0] * 180 / (Math.PI))
                                 % 360);
                     }
                     MainActivity.updateHeading(lastValue);
