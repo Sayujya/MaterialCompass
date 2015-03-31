@@ -4,7 +4,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.widget.TextView;
 
 /**
  * Created by sayujyarijal on 15-03-30.
@@ -15,12 +14,12 @@ public class HeadingListener implements SensorEventListener {
     private AccelEventListener accelListener;
     private float[] orientation = new float[3];
     private float lastValue = -1;
-    private TextView headingTV;
+    private Compass mainCompass;
 
-    public HeadingListener(AccelEventListener accelListener, TextView headingTV) {
+    public HeadingListener(AccelEventListener accelListener, Compass mainCompass) {
         super();
         this.accelListener = accelListener;
-        this.headingTV = headingTV;
+        this.mainCompass = mainCompass;
     }
 
     private static float getLowPass(float value, float lastValue) {
@@ -51,9 +50,8 @@ public class HeadingListener implements SensorEventListener {
                     lastValue = (float) ((360 + orientation[0] * 180 / (Math.PI))
                             % 360);
                 }
-                headingTV.setText(String.format("%03d"
-                        , (int) lastValue) + "°");
-                MainActivity.moveNeedle((int) lastValue);
+
+                mainCompass.updateHeading(lastValue);
             }
         }
     }
