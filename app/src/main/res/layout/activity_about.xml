@@ -22,4 +22,10 @@
         android:text="University of Waterloo"
         android:textSize="15dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Colors picked by Sheelan. Thank you Sheelan!"
+        android:textSize="15dp" />
+
 </LinearLayout>
