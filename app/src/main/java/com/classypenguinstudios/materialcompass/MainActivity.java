@@ -3,14 +3,18 @@ package com.classypenguinstudios.materialcompass;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.Calendar;
 
 
 public class MainActivity extends Activity {
@@ -20,6 +24,7 @@ public class MainActivity extends Activity {
     Sensor mAccelRawSensor;
     Sensor mHeadingSensor;
     private SensorManager mSensorManager;
+    private String mode = "Day";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +32,29 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         Compass mainCompass = createMainCompass();
-
+        mode = checkNightMode(mainCompass);
         startSensors(mainCompass.getLayout().getContext(), mainCompass);
 
+        // stop compass depending on angle
+        // night colors and day colors
+        // point to true north not magnetic north
 
+    }
+
+    private String checkNightMode(Compass mainCompass) {
+        final Calendar mainCal = Calendar.getInstance();
+        final int hour = mainCal.get(Calendar.HOUR_OF_DAY);
+        if (hour < 6 || hour >= 18) {
+            mainCompass.setCompassColorDark();
+            final Window currentWindow = this.getWindow();
+            int darkColor = getApplicationContext().getResources().getColor(R.color.primary_night);
+            int darKColorAccent = getApplicationContext().getResources().getColor(R.color.primary_dark_night);
+            currentWindow.setNavigationBarColor(darkColor);
+            currentWindow.setStatusBarColor(darkColor);
+            getActionBar().setBackgroundDrawable(new ColorDrawable(darKColorAccent));
+            return "Night";
+        }
+        return "Day";
     }
 
     private Compass createMainCompass() {
@@ -43,9 +67,11 @@ public class MainActivity extends Activity {
 
         ImageView circleIV = (ImageView) findViewById(R.id.IBcircle);
 
+        ImageView innerCircleIV = (ImageView) findViewById(R.id.IBinnerCircle);
+
         TextView headingTV = (TextView) findViewById(R.id.TVheading);
 
-        Compass mainCompass = new Compass(circleIV, headingTV, new DirectionIndicator[]{northDI, eastDI, southDI, westDI}, mainRL);
+        Compass mainCompass = new Compass(circleIV, headingTV, new DirectionIndicator[]{northDI, eastDI, southDI, westDI}, mainRL, innerCircleIV, getApplicationContext());
 
         mainCompass.startAnimation();
 
@@ -112,7 +138,6 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }
 
 

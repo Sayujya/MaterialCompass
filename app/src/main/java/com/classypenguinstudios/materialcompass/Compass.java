@@ -1,6 +1,8 @@
 package com.classypenguinstudios.materialcompass;
 
 import android.animation.Animator;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -11,13 +13,14 @@ import android.widget.TextView;
  * Created by sayujyarijal on 15-03-31.
  */
 public class Compass {
-    private ImageView needleIV;
+    private ImageView needleIV, materialIV;
     private TextView headingTV;
     private DirectionIndicator northDI, eastDI, westDI, southDI;
     private RelativeLayout mainRL;
+    private Context appContext;
     private int heading = 0;
 
-    public Compass(ImageView needleIV, TextView headingTV, DirectionIndicator[] directionIndicators, RelativeLayout mainRL) {
+    public Compass(ImageView needleIV, TextView headingTV, DirectionIndicator[] directionIndicators, RelativeLayout mainRL, ImageView materialIV, Context appContext) {
         this.needleIV = needleIV;
         this.headingTV = headingTV;
         this.northDI = directionIndicators[0];
@@ -25,14 +28,18 @@ public class Compass {
         this.southDI = directionIndicators[2];
         this.westDI = directionIndicators[3];
         this.mainRL = mainRL;
+        this.materialIV = materialIV;
+        this.appContext = appContext;
     }
 
     public void updateHeading(float heading) {
         moveNeedle(heading);
-        headingTV.setText(String.format("%03d"
-                , (int) heading) + "°");
-        this.heading = (int) heading;
-        elevateViews();
+        if (this.heading - (int) heading != 0) {
+            this.heading = (int) heading;
+            headingTV.setText(String.format("%03d"
+                    , (int) heading) + "°");
+            elevateViews();
+        }
     }
 
     private void moveNeedle(float heading) {
@@ -134,6 +141,19 @@ public class Compass {
                 animator.start();
             }
         });
+    }
+
+    public void setCompassColorDark() {
+
+        mainRL.setBackgroundColor(appContext.getResources().getColor(R.color.default_dark));
+        materialIV.setBackground(appContext.getResources().getDrawable(R.drawable.round_button_dark));
+        headingTV.setTextColor(appContext.getResources().getColor(R.color.default_white));
+        needleIV.setBackground(appContext.getResources().getDrawable(R.drawable.round_button_needle_night));
+        Drawable nightAccentColor = appContext.getResources().getDrawable(R.drawable.round_button_accent_night);
+        northDI.setBackground(nightAccentColor);
+        eastDI.setBackground(nightAccentColor);
+        southDI.setBackground(nightAccentColor);
+        westDI.setBackground(nightAccentColor);
     }
 
     public RelativeLayout getLayout() {
