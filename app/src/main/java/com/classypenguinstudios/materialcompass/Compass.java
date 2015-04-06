@@ -199,15 +199,15 @@ public class Compass {
         location = getGPS();
         final com.luckycatlabs.sunrisesunset.dto.Location stringLocation = new com.luckycatlabs.sunrisesunset.dto.Location(Double.toString(location[0]), Double.toString(location[1]));
         final SunriseSunsetCalculator nightChecker = new SunriseSunsetCalculator(stringLocation, mainCal.getTimeZone());
-        Calendar[] sunTimes = new Calendar[2];
-        sunTimes[0] = nightChecker.getCivilSunriseCalendarForDate(mainCal);
-        sunTimes[1] = nightChecker.getCivilSunsetCalendarForDate(mainCal);
-        if (mainCal.compareTo(sunTimes[0]) < 0 || mainCal.compareTo(sunTimes[1]) >= 0) {
+        Calendar[] sunRiseSetTimes = new Calendar[2];
+        sunRiseSetTimes[0] = nightChecker.getCivilSunriseCalendarForDate(mainCal);
+        sunRiseSetTimes[1] = nightChecker.getCivilSunsetCalendarForDate(mainCal);
+        if (mainCal.compareTo(sunRiseSetTimes[0]) < 0 || mainCal.compareTo(sunRiseSetTimes[1]) >= 0) {
             this.mode = "Night";
         } else {
             this.mode = "Day";
         }
-        return sunTimes;
+        return sunRiseSetTimes;
     }
 
     public String getMode() {
