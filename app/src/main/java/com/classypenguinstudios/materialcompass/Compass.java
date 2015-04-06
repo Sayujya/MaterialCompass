@@ -3,11 +3,19 @@ package com.classypenguinstudios.materialcompass;
 import android.animation.Animator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.hardware.GeomagneticField;
+import android.location.Location;
+import android.location.LocationManager;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
+
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by sayujyarijal on 15-03-31.
@@ -19,6 +27,10 @@ public class Compass {
     private RelativeLayout mainRL;
     private Context appContext;
     private int heading = 0;
+    private String mode = "Day";
+    private double[] location;
+    private Calendar[] sunTimes;
+    private GeomagneticField field;
 
     public Compass(ImageView needleIV, TextView headingTV, DirectionIndicator[] directionIndicators, RelativeLayout mainRL, ImageView materialIV, Context appContext) {
         this.needleIV = needleIV;
@@ -30,6 +42,11 @@ public class Compass {
         this.mainRL = mainRL;
         this.materialIV = materialIV;
         this.appContext = appContext;
+        sunTimes = getSunriseAndSunset();
+        if (mode.equalsIgnoreCase("Night")) {
+            setCompassColorDark();
+        }
+
     }
 
     public void updateHeading(float heading) {
@@ -154,6 +171,47 @@ public class Compass {
         eastDI.setBackground(nightAccentColor);
         southDI.setBackground(nightAccentColor);
         westDI.setBackground(nightAccentColor);
+    }
+
+    private double[] getGPS() {
+        LocationManager lm = (LocationManager) appContext.getSystemService(
+                Context.LOCATION_SERVICE);
+        List<String> providers = lm.getProviders(true);
+
+        Location l = null;
+
+        for (int i = providers.size() - 1; i >= 0; i--) {
+            l = lm.getLastKnownLocation(providers.get(i));
+            if (l != null) break;
+        }
+
+        double[] gps = new double[2];
+        if (l != null) {
+            gps[0] = l.getLatitude();
+            gps[1] = l.getLongitude();
+        }
+
+        return gps;
+    }
+
+    private Calendar[] getSunriseAndSunset() {
+        Calendar mainCal = Calendar.getInstance();
+        location = getGPS();
+        final com.luckycatlabs.sunrisesunset.dto.Location stringLocation = new com.luckycatlabs.sunrisesunset.dto.Location(Double.toString(location[0]), Double.toString(location[1]));
+        final SunriseSunsetCalculator nightChecker = new SunriseSunsetCalculator(stringLocation, mainCal.getTimeZone());
+        Calendar[] sunTimes = new Calendar[2];
+        sunTimes[0] = nightChecker.getCivilSunriseCalendarForDate(mainCal);
+        sunTimes[1] = nightChecker.getCivilSunsetCalendarForDate(mainCal);
+        if (mainCal.compareTo(sunTimes[0]) < 0 || mainCal.compareTo(sunTimes[1]) >= 0) {
+            this.mode = "Night";
+        } else {
+            this.mode = "Day";
+        }
+        return sunTimes;
+    }
+
+    public String getMode() {
+        return mode;
     }
 
     public RelativeLayout getLayout() {
