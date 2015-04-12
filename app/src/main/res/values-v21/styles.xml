@@ -7,9 +7,9 @@
     <color name="pointer_color">#ff0057</color>
     <color name="default_white">#f5f5f5</color>
     <color name="default_dark">#263238</color>
-    <color name="primary_night">#607D8B</color>
-    <color name="primary_dark_night">#455A64</color>
-    <color name="accent_night">#607D8B</color>
+    <color name="primary_night">#261F31</color>
+    <color name="primary_dark_night">#2D253A</color>
+    <color name="accent_night">#FF4081</color>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Material.Light">
         <!-- Customize your theme here. -->

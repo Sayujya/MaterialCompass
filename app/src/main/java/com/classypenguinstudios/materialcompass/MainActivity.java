@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
     }
 
 
-    private void checkAndSetNightMode(Compass mainCompass) {
+    protected void checkAndSetNightMode(Compass mainCompass) {
 
         if (mainCompass.getMode().equalsIgnoreCase("Night")) {
             final Window currentWindow = this.getWindow();

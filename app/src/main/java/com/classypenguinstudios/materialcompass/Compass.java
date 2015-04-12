@@ -121,10 +121,10 @@ public class Compass {
             public void onGlobalLayout() {
                 mainRL.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                int cx = mainRL.getRight();
-                int cy = mainRL.getBottom();
+                int cx = mainRL.getRight() / 2;
+                int cy = mainRL.getBottom() / 6 * 5;
 
-                int finalRadius = (int) (1.45 * Math.max(mainRL.getWidth(), mainRL.getHeight()));
+                float finalRadius = (float) (1.45 * Math.max(mainRL.getWidth(), mainRL.getHeight()));
 
                 Animator animator = ViewAnimationUtils.createCircularReveal(mainRL, cx, cy, 0, finalRadius);
                 animator.setDuration(2000);
@@ -139,6 +139,7 @@ public class Compass {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
+
                         int[] valueArray = new int[]{23, 68, 113, 158, 203, 248, 293, 338};
                         for (int i = 0; i < 8; i++) {
                             updateHeading(valueArray[i]);
@@ -163,7 +164,7 @@ public class Compass {
     public void setCompassColorDark() {
 
         mainRL.setBackgroundColor(appContext.getResources().getColor(R.color.default_dark));
-        materialIV.setBackground(appContext.getResources().getDrawable(R.drawable.round_button_dark));
+        materialIV.setBackground(appContext.getResources().getDrawable(R.drawable.round_button_night));
         headingTV.setTextColor(appContext.getResources().getColor(R.color.default_white));
         needleIV.setBackground(appContext.getResources().getDrawable(R.drawable.round_button_needle_night));
         Drawable nightAccentColor = appContext.getResources().getDrawable(R.drawable.round_button_accent_night);
