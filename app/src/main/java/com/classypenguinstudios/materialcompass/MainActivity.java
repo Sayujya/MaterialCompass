@@ -28,22 +28,22 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DayChecker.setAppContext(getApplicationContext());
+        DayChecker.updateMode();
+        checkAndSetNightMode();
         Compass mainCompass = createMainCompass();
-        checkAndSetNightMode(mainCompass);
         startSensors(mainCompass.getLayout().getContext(), mainCompass);
-
-        // stop compass depending on angle
-        // point to true north not magnetic north
 
     }
 
+    protected void checkAndSetNightMode() {
 
-    protected void checkAndSetNightMode(Compass mainCompass) {
-
-        if (mainCompass.getMode().equalsIgnoreCase("Night")) {
+        if (DayChecker.getMode().equalsIgnoreCase("Night")) {
             final Window currentWindow = this.getWindow();
             int darkColor = getApplicationContext().getResources().getColor(R.color.primary_night);
             int darKColorAccent = getApplicationContext().getResources().getColor(R.color.primary_dark_night);
+            RelativeLayout revealRL = (RelativeLayout) findViewById(R.id.RLreveal);
+            revealRL.setBackgroundColor(darkColor);
             currentWindow.setNavigationBarColor(darkColor);
             currentWindow.setStatusBarColor(darkColor);
             getActionBar().setBackgroundDrawable(new ColorDrawable(darKColorAccent));
