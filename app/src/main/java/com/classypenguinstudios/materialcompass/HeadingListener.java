@@ -13,6 +13,7 @@ public class HeadingListener implements SensorEventListener {
     protected final static float smoothingConst = 0.95f;
     private AccelEventListener accelListener;
     private float[] orientation = new float[3];
+    private float northDegree;
     private float lastValue = -1;
     private Compass mainCompass;
 
@@ -43,17 +44,22 @@ public class HeadingListener implements SensorEventListener {
             if (SensorManager.getRotationMatrix(R, new float[9],
                     accelListener.getLastValue(), event.values)) {
                 SensorManager.getOrientation(R, orientation);
+                northDegree = (float) ((360 + orientation[0] * 180 / (Math.PI))
+                        % 360);
+                northDegree = getTrueNorth(northDegree);
                 if (lastValue != -1) {
-                    lastValue = getLowPass((float) ((360 + orientation[0] * 180 / (Math.PI))
-                            % 360), lastValue) % 360;
+                    lastValue = getLowPass(northDegree, lastValue) % 360;
                 } else {
-                    lastValue = (float) ((360 + orientation[0] * 180 / (Math.PI))
-                            % 360);
+                    lastValue = northDegree;
                 }
 
                 mainCompass.updateHeading(lastValue);
             }
         }
+    }
+
+    private float getTrueNorth(float v) {
+        return (360 + v - Compass.getDeclination()) % 360;
     }
 
     @Override

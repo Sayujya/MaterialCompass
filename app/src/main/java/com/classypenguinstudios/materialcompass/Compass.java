@@ -21,6 +21,7 @@ import java.util.List;
  * Created by sayujyarijal on 15-03-31.
  */
 public class Compass {
+    private static float declination;
     private ImageView needleIV, materialIV;
     private TextView headingTV;
     private DirectionIndicator northDI, eastDI, westDI, southDI;
@@ -29,8 +30,8 @@ public class Compass {
     private int heading = 0;
     private String mode = "Day";
     private double[] location;
+    private long time;
     private Calendar[] sunTimes;
-    private GeomagneticField field;
 
     public Compass(ImageView needleIV, TextView headingTV, DirectionIndicator[] directionIndicators, RelativeLayout mainRL, ImageView materialIV, Context appContext) {
         this.needleIV = needleIV;
@@ -46,7 +47,12 @@ public class Compass {
         if (mode.equalsIgnoreCase("Night")) {
             setCompassColorDark();
         }
+        GeomagneticField field = new GeomagneticField((float) location[0], (float) location[1], (float) location[2], time);
+        this.declination = field.getDeclination();
+    }
 
+    public static float getDeclination() {
+        return Compass.declination;
     }
 
     public void updateHeading(float heading) {
@@ -162,7 +168,6 @@ public class Compass {
     }
 
     public void setCompassColorDark() {
-
         mainRL.setBackgroundColor(appContext.getResources().getColor(R.color.default_dark));
         materialIV.setBackground(appContext.getResources().getDrawable(R.drawable.round_button_night));
         headingTV.setTextColor(appContext.getResources().getColor(R.color.default_white));
@@ -186,10 +191,11 @@ public class Compass {
             if (l != null) break;
         }
 
-        double[] gps = new double[2];
+        double[] gps = new double[3];
         if (l != null) {
             gps[0] = l.getLatitude();
             gps[1] = l.getLongitude();
+            gps[2] = l.getAltitude();
         }
 
         return gps;
@@ -197,6 +203,7 @@ public class Compass {
 
     private Calendar[] getSunriseAndSunset() {
         Calendar mainCal = Calendar.getInstance();
+        time = mainCal.getTimeInMillis();
         location = getGPS();
         final com.luckycatlabs.sunrisesunset.dto.Location stringLocation = new com.luckycatlabs.sunrisesunset.dto.Location(Double.toString(location[0]), Double.toString(location[1]));
         final SunriseSunsetCalculator nightChecker = new SunriseSunsetCalculator(stringLocation, mainCal.getTimeZone());
