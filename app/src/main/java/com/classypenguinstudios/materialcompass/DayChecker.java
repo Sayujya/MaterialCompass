@@ -16,6 +16,7 @@ public class DayChecker {
     private static String mode = "Day";
     private static Context appContext;
     private static double[] location;
+    private static Calendar sunTimes[];
 
     public static void setAppContext(Context appContext) {
         DayChecker.appContext = appContext;
@@ -34,6 +35,7 @@ public class DayChecker {
         } else {
             DayChecker.mode = "Day";
         }
+        sunTimes = sunRiseSetTimes;
     }
 
     public static String getMode() {
@@ -62,6 +64,11 @@ public class DayChecker {
             gps[1] = l.getLongitude();
             gps[2] = l.getAltitude();
         }
+
         DayChecker.location = gps;
+    }
+
+    public static Calendar[] getSunTimes() {
+        return sunTimes;
     }
 }

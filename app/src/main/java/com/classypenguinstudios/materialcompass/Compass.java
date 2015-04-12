@@ -17,6 +17,7 @@ import java.util.Calendar;
  */
 public class Compass {
     private static float declination;
+    private static long time;
     private ImageView needleIV, materialIV;
     private TextView headingTV;
     private DirectionIndicator northDI, eastDI, westDI, southDI;
@@ -24,7 +25,6 @@ public class Compass {
     private Context appContext;
     private int heading = 0;
     private double[] location;
-    private long time;
 
     public Compass(ImageView needleIV, TextView headingTV, DirectionIndicator[] directionIndicators, RelativeLayout mainRL, ImageView materialIV, Context appContext) {
         this.needleIV = needleIV;
@@ -46,6 +46,10 @@ public class Compass {
 
     public static float getDeclination() {
         return Compass.declination;
+    }
+
+    public static long getTime() {
+        return time;
     }
 
     public void updateHeading(float heading) {
@@ -172,7 +176,6 @@ public class Compass {
         westDI.setBackground(nightAccentColor);
     }
 
-
     private void updateTimeAndLoc() {
         Calendar mainCal = Calendar.getInstance();
         time = mainCal.getTimeInMillis();
@@ -182,5 +185,4 @@ public class Compass {
     public RelativeLayout getLayout() {
         return this.mainRL;
     }
-
 }

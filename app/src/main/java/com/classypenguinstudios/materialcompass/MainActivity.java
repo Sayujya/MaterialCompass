@@ -124,8 +124,14 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
-            Intent myIntent = new Intent(MainActivity.this, About.class);
-            MainActivity.this.startActivity(myIntent);
+            Intent aboutIntent = new Intent(MainActivity.this, About.class);
+            MainActivity.this.startActivity(aboutIntent);
+            return true;
+        }
+
+        if (id == R.id.action_location) {
+            Intent locationInfoIntent = new Intent(MainActivity.this, LocationInfo.class);
+            MainActivity.this.startActivity(locationInfoIntent);
             return true;
         }
 
