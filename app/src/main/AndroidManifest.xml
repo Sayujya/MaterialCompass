@@ -23,5 +23,6 @@
             android:name=".About"
             android:label="@string/title_activity_about" />
     </application>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
 
 </manifest>
